@@ -558,7 +558,7 @@ export const toolbarBlocksDefinitions = (Blockly) => {
     init: function() {
       this.appendDummyInput()
           .appendField("set speed")
-          .appendField(new Blockly.FieldNumber(0, 0, 60), "SECONDS")
+          .appendField(new Blockly.FieldDropdown([["25", '1'],["50", '2'],["75", '3'],["100", '4']]), 'SPEED')
           .appendField("cm/s");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);

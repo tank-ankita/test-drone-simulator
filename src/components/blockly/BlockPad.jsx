@@ -16,7 +16,8 @@ import { toolbarConfig, toolbarBlocksDefinitions } from './config/toolbar.js'
 Blockly.setLocale(En);
 
 const BlockPad = ({ 
-    onDroneTakeOff
+    onDroneTakeOff, 
+    onDroneSetSpeed
   }) => {
   
   const blocklyDiv = useRef();
@@ -32,7 +33,12 @@ const BlockPad = ({
     // to help reset the state of the drone so it can be triggered again
     setTimeout(() => {
       onDroneTakeOff(null);
-    }, 3000); 
+    }, 1000); 
+  }
+
+  const setDroneSpeed = (speed) => {
+    console.log('Speed set to ', speed)
+    onDroneSetSpeed(speed)
   }
 
   const runSimulator = () => {
@@ -85,6 +91,7 @@ const BlockPad = ({
 
 BlockPad.propTypes = {
   onDroneTakeOff: PropTypes.func, 
+  onDroneSetSpeed: PropTypes.func 
 };
 
 export default BlockPad;

@@ -6,10 +6,12 @@ import PropTypes from 'prop-types';
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber';
 import { Matrix4, Quaternion, Vector3 } from 'three';
+import { droneTakeOff } from './droneUtils'; 
 
 const x = new Vector3(1, 0, 0);
 const y = new Vector3(0, 1, 0);
 const z = new Vector3(0, 0, 1);
+
 const planePosition = new Vector3(-1, 3, 10);
 let maxVelocity = 0.04;
 let jawVelocity = 0;
@@ -76,7 +78,11 @@ function updatePlaneAxis(x, y, z, planePosition, camera) {
  }
 
 
-export function Airplane({ onDroneTakeOff, ...props }) {
+export function Airplane({ 
+  onDroneTakeOff,
+  onDroneSetSpeed, 
+  ...props 
+}) {
   // thanks to:
   // https://sketchfab.com/3d-models/vintage-toy-airplane-7de2ecbc0acb4b1886c3df3d196c366b
   
@@ -84,25 +90,7 @@ export function Airplane({ onDroneTakeOff, ...props }) {
   const groupRef = useRef();
   const helixMeshRef = useRef();
 
-
-  const droneTakeOff = (delay) => {
-    console.log("delaying takeoff by ", delay);
-
-    setTimeout(() => {
-      controls["s"] = true;  
-      console.log("Takeoff initiated");
-  
-      
-      setTimeout(() => {
-        controls["s"] = false;  
-        console.log("Takeoff completed after 2 seconds");
-      }, 2000); 
-    }, delay * 1000);
-  };
-
   useFrame(({ camera }) => {
-    
-
     updatePlaneAxis(x, y, z, planePosition, camera);
 
     const rotMatrix = new Matrix4().makeBasis(x, y, z);
@@ -146,9 +134,13 @@ export function Airplane({ onDroneTakeOff, ...props }) {
 
   useEffect(() => {
     if (onDroneTakeOff) {
-      droneTakeOff(onDroneTakeOff);
+      droneTakeOff(onDroneTakeOff, controls);
     }
-  }, [onDroneTakeOff]);
+
+    if(onDroneSetSpeed) {
+      planeSpeed = onDroneSetSpeed;
+    }
+  }, [onDroneTakeOff, onDroneSetSpeed]);
 
 
   return (
@@ -166,6 +158,7 @@ export function Airplane({ onDroneTakeOff, ...props }) {
 
 Airplane.propTypes = {
   onDroneTakeOff: PropTypes.number,  
+  onDroneSetSpeed: PropTypes.number
 };
 
 useGLTF.preload('assets/models/airplane.glb');

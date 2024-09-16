@@ -5,14 +5,17 @@ import { SphereEnv } from "./SphereEnv";
 import { Airplane } from "./Airplane";
 import PropTypes from 'prop-types';
 
-function App({ onDroneTakeOff }) {
+function App({ onDroneTakeOff, onDroneSetSpeed }) {
   return (
     <>
       <SphereEnv />
       <Environment background={false} files={"assets/textures/envmap.hdr"} />
       <PerspectiveCamera makeDefault position={[0, 0, 0]} />
       <Landscape />
-      <Airplane onDroneTakeOff={onDroneTakeOff} />
+      <Airplane 
+        onDroneTakeOff={onDroneTakeOff} 
+        onDroneSetSpeed={onDroneSetSpeed}
+      />
       <directionalLight
         castShadow
         color={"#f3d29a"}
@@ -33,6 +36,7 @@ function App({ onDroneTakeOff }) {
 }
 App.propTypes = {
   onDroneTakeOff: PropTypes.number, 
+  onDroneSetSpeed: PropTypes.number
 };
 
 export default App;
